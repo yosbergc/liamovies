@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiaMovies | El mejor sitio de streaming para ver películas, series y más</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/7adb9c563c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="img/favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="./styles/app.css">
+</head>
+<body>
+    <header class="website-header">
+        <section class="mobile-header">
+            <img src="img/mobileMenu.png" alt="Mobile menu icon" class="icon mobileMenuIcon">
+            <section class="mobileMenuContainer hidden">
+                <img src="img/back.png" alt="Back Button" class="backMobileMenuBtn" onclick="hideMobileMenu()">
+                <nav>
+                    <ul>
+                        <li><a href="#" onclick="hideMobileMenu()">Inicio</a></li>
+                        <li><a href="#trending-section" onclick="hideMobileMenu()">Tendencias</a></li>
+                        <li><a href="#most-popular-section" onclick="hideMobileMenu()">Más populares</a></li>
+                        <li><a href="#categories-section" onclick="hideMobileMenu()">Categorías</a></li>
+                        <li><a href="#soon-section" onclick="hideMobileMenu()">Próximamente</a></li>
+                    </ul>
+                </nav>
+            </section>
+        </section>
+        <img src="img/favicon.jpg" alt="LiaMovies Logo" class="websiteLogo">
+        <section class="desktop-menu">
+            <nav>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#trending-section">Tendencias</a></li>
+                    <li><a href="#most-popular-section">Más populares</a></li>
+                    <li><a href="#categories-section">Categorías</a></li>
+                    <li><a href="#soon-section">Próximamente</a></li>
+                </ul>
+            </nav>
+        </section>
+        <section class="desktop-header">
+            <div class="search-container">
+                <input type="text" placeholder="Deadpool">
+                <img src="img/searchIcon.png" alt="search icon" class="icon searchIconDesktop">
+            </div>
+        </section>
+        <img src="img/searchIcon.png" alt="Search Icon" class="icon searchIconMobile">
+    </header>
+    <main>
+        <section class="hero-section">
+            <section class="movie-info">
+                <h2 class="movie-title"></h2>
+                <div class="movie-features">
+                    <p class="movie-stars"><i class="fa-solid fa-star"></i><span class="number"></span></p> 
+                    <p class="movie-time">1h 55m</p>
+                    <p class="movie-category">Animación</p>
+                </div>
+                <section class="button-container">
+                    <button class="primary-btn"><i class="fa-solid fa-play"></i> VER TRAILER</button>
+                    <button class="secondary-btn showHeroInfo"><i class="fa-solid fa-circle-info"></i></button>
+                </section>
+            </section>
+        </section>
+        <section class="trending-section" id="trending-section">
+            <header class="trending-header">
+                <h3>Tendencias</h3>
+                <button class="show-more primary-btn">Ver Más</button>
+            </header>
+            <section class="trending-content">
+            </section>
+        </section>
+        <section class="most-popular-section" id="most-popular-section">
+            <header class="trending-header">
+                <h3>Más populares</h3>
+                <button class="show-more primary-btn">Ver Más</button>
+            </header>
+            <section class="most-popular-content">
+            </section>
+        </section>
+        <section class="categories-section" id="categories-section">
+            <h3>Categorías</h3>
+            <section class="categories-container">
+            </section>
+        </section>
+        <section class="soon-section" id="soon-section">
+            <header class="trending-header">
+                <h3>Próximamente</h3>
+                <button class="show-more primary-btn">Ver Más</button>
+            </header>
+            <section class="soon-content">
+            </section>
+        </section>
+    </main>
+    <section class="movieSelectedContainer hidden">
+        <img src="img/back.png" alt="Back Button" class="backButtonMovieSelected">
+        <img src="img/back.png" alt="Back Button" class="backButtonMovieSelectedToCategory hidden">
+        <div class="movie-selected-image-container">
+        </div>
+        <div class="movieSelectedInfo">
+            <header class="selectedHeader">
+                <h2 class="movie-title-selected"></h2>
+                <p class="movie-stars-selected"><i class="fa-solid fa-star"></i><span class="number">9.2</span></p> 
+            </header>
+            <section class="movie-selected-description-container">
+                <p class="movie-selected-description"></p>
+            </section>
+        </div>
+    </section>
+    <section class="searchedMovieResultsContainer hidden">
+        <header class="searchedMovieHeader">
+            <img src="img/back.png" alt="Back Button" class="backButtonSearchResults">
+            <div class="searchContainer">
+                <input type="text" name="searchResults" id="searchResults">
+                <img src="img/searchIcon.png" alt="Search Icon" class="searchedMovieSearchIcon">
+            </div>
+        </header>
+        <section class="searchedMovieResults">
+            <h3>Resultados de búsqueda para Deadpool</h3>
+            <div class="searched-content">
+
+            </div>
+        </section>
+    </section>
+    <section class="categoryMovieContainer hidden">
+        <header class="searchedMovieHeader">
+            <img src="img/back.png" alt="Back Button" class="backButtonCategory">
+            <h2 class="category-name"></h2>
+        </header>
+        <section class="searchedMovieResults">
+            <div class="result-content">
+
+            </div>
+        </section>
+    </section>
+    <footer class="">
+        <img src="img/themoviedb.svg" alt="The Movie DB Logo">
+        <p>Hecho con ❤️ por Bytdev</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="src/apikey.js"></script>
+    <script src="src/main.js"></script>
+</body>
+</html>
