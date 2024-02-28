@@ -27,12 +27,59 @@ let categoryMovieSelectedBackBtn = document.querySelector('.backButtonMovieSelec
 // Header mobile
 let mobileMenuBtn = document.querySelector('.mobileMenuIcon');
 let mobileMenuContainer = document.querySelector('.mobileMenuContainer');
+// Search Page
+let searchContainerBtn = document.querySelector('.searchIconMobile');
+let searchMobileContainer = document.querySelector('.searchMobile');
+let searchInputHomepageMobile = document.querySelector('#searchResultsMobile')
+let submitSearchMobileBtn = document.querySelector('.searchedMovieSearchIconMobile');
+let searchInputHomepageDesktop = document.querySelector('.searchInputHomepageDesktop')
+let submitSearchDesktopBtn = document.querySelector('.searchIconDesktop');
+let searchContainer = document.querySelector('.searchedMovieResultsContainer')
+let searchBackBtn = document.querySelector('.backButtonSearchResults')
+let searchTitleQuery = document.querySelector('.search-query-title')
+let searchContent = document.querySelector('.searched-content');
+let searchResultsInputSearchPage = document.querySelector('#searchResults')
+let backButtonMovieSelectedToSearch = document.querySelector('.backButtonMovieSelectedToSearch');
+let searchPageBtn = document.querySelector('.searchedMovieSearchIcon');
+
+searchPageBtn.addEventListener('click', () => {
+    getSearchResults(searchResultsInputSearchPage.value);
+})
+backButtonMovieSelectedToSearch.addEventListener('click', () => {
+    searchContainer.classList.remove('hidden');
+    watchMoviePage.classList.add('hidden')
+})
+searchBackBtn.addEventListener('click', () => {
+    searchMobileContainer.classList.add('hidden')
+    searchContainer.classList.add('hidden')
+    showHomePage();
+})
+submitSearchDesktopBtn.addEventListener('click', () => {
+    if (searchInputHomepageDesktop.value.length < 1) {
+
+    } else {
+        getSearchResults(searchInputHomepageDesktop.value)
+        hideHomepage()
+        searchContainer.classList.remove('hidden')
+    }
+    
+})
+submitSearchMobileBtn.addEventListener('click', () => {
+    if (searchInputHomepageMobile.value.length < 1) {
+
+    } else {
+        hideSearchMobile()
+        getSearchResults(searchInputHomepageMobile.value)
+        hideHomepage()
+        searchContainer.classList.remove('hidden')
+    }
+})
+searchContainerBtn.addEventListener('click', () => {
+    searchMobileContainer.classList.remove('hidden')
+})
 mobileMenuBtn.addEventListener('click', () => {
     mobileMenuContainer.classList.remove('hidden')
 })
-function hideMobileMenu() {
-    mobileMenuContainer.classList.add('hidden')
-}
 categoryMovieSelectedBackBtn.addEventListener('click', () => {
     watchMoviePage.classList.add('hidden')
     categoryMovieContainer.classList.remove('hidden');
@@ -97,15 +144,25 @@ async function getUpcomingMovies() {
         </div>`
     })
 }
-async function watchMovieInfo(id, isCategory) {
-    if (!isCategory) {
+async function watchMovieInfo(id, isPage) {
+    if (!isPage) {
         categoryMovieSelectedBackBtn.classList.add('hidden')
+        backButtonMovieSelectedToSearch.classList.add('hidden')
         watchMovieBackButton.classList.remove('hidden')
     } else {
-        categoryMovieSelectedBackBtn.classList.remove('hidden')
-        watchMovieBackButton.classList.add('hidden')
+        if (isPage.isSearch) {
+            backButtonMovieSelectedToSearch.classList.remove('hidden');
+            categoryMovieSelectedBackBtn.classList.add('hidden')
+            watchMovieBackButton.classList.add('hidden')
+        } else {
+            categoryMovieSelectedBackBtn.classList.remove('hidden');
+            watchMovieBackButton.classList.add('hidden');
+            backButtonMovieSelectedToSearch.classList.add('hidden');
+        }
+        
     }
     hideHomepage();
+    searchContainer.classList.add('hidden')
     categoryMovieContainer.classList.add('hidden')
     let {data} = await api(`movie/${id}?language=es-ES`)
     watchMoviePageImg.style.background = `url("https://image.tmdb.org/t/p/original/${data.backdrop_path}")`;
@@ -122,12 +179,24 @@ async function watchCategoryMovies(categoryID) {
     categoryResultContainer.innerHTML = '';
     categoryMovies.forEach(movie => {
         categoryResultContainer.innerHTML = categoryResultContainer.innerHTML + `<div class="movie-poster">
-        <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id}, true)">
+        <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id}, {isCategory: true})">
         </div>`
     })
     hideHomepage()
     categoryMovieContainer.classList.remove('hidden')
     scrollTo(0,0)
+}
+async function getSearchResults(query) {
+    let {data} = await api(`search/movie?query=${query}&language=es-ES`)
+    let results = data.results;
+    searchTitleQuery.innerHTML = "Resultados de búsqueda para " + query.toLowerCase();
+    searchContent.innerHTML = '';
+    results.forEach(movie => {
+        searchContent.innerHTML = searchContent.innerHTML + `<div class="movie-poster">
+        <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id}, {isSearch: true})">
+        </div>`
+    })
+    searchResultsInputSearchPage.value = query;
 }
 function showHomePage() {
     headerContainer.classList.remove('hidden')
@@ -138,6 +207,12 @@ function hideHomepage() {
     headerContainer.classList.add('hidden')
     homepage.classList.add('hidden')
     footer.classList.add('hidden')
+}
+function hideMobileMenu() {
+    mobileMenuContainer.classList.add('hidden')
+}
+function hideSearchMobile() {
+    searchMobileContainer.classList.add('hidden')
 }
 getTrendingMovies()
 getPopularMovies()
