@@ -3,8 +3,8 @@ let categoriesContent = document.querySelector('.categories-container');
 let mostPopularContent = document.querySelector('.most-popular-content');
 let soonContent = document.querySelector('.soon-content');
 let heroImage = document.querySelector('.hero-section')
+let heroOverview = document.querySelector('.movie-feature-overview')
 let heroMovieTitle = document.querySelector('.movie-title')
-let moviePoints = document.querySelector('.number');
 let trendingMovies;
 // Páginas y secciones
 let headerContainer = document.querySelector('.website-header')
@@ -104,7 +104,7 @@ async function getHeader() {
     heroImage.style.backgroundSize = 'cover'
     heroImage.style.backgroundPosition = 'center'
     heroMovieTitle.innerHTML = trendingMovies[randomNumber].title;
-    moviePoints.innerHTML = trendingMovies[randomNumber].vote_average.toFixed(1)
+    heroOverview.innerHTML = trendingMovies[randomNumber].overview;
     heroInfoBtn.onclick = () => {
         watchMovieInfo(trendingMovies[randomNumber].id)
     }
