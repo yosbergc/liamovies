@@ -98,6 +98,15 @@ const api = axios.create({
         Authorization: `Bearer ${ACCESS_TOKEN}`
     }
 });
+const lazyImg = new IntersectionObserver(imgDefer)
+function imgDefer(entries) {
+    entries.forEach(img => {
+        if (img.isIntersecting) {
+            img.target.src = img.target.getAttribute('dataImg');
+            lazyImg.unobserve(img.target)
+        }
+    })
+}
 async function getHeader() {
     let randomNumber = Math.floor(Math.random() * 20)
     heroImage.style.background = `url(https://image.tmdb.org/t/p/original/${trendingMovies[randomNumber].backdrop_path})`
@@ -114,24 +123,13 @@ async function getHeader() {
 async function getTrendingMovies() {
     let {data} = await api('trending/movie/day?language=es-ES');
     trendingMovies = data.results;
-    trendingContent.innerHTML = '';
-    trendingMovies.forEach(movie => {
-        trendingContent.innerHTML = trendingContent.innerHTML + `<div class="movie-poster">
-        <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id})">
-        </div>`
-    });
-
+    renderMovies(trendingMovies, trendingContent);
     getHeader();
 }
 async function getPopularMovies() {
     let {data} = await api('movie/popular');
     let popularMovies = data.results;
-    mostPopularContent.innerHTML = '';
-    popularMovies.forEach(movie => {
-        mostPopularContent.innerHTML = mostPopularContent.innerHTML + `<div class="movie-poster">
-        <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id})">
-        </div>`
-    })
+    renderMovies(popularMovies, mostPopularContent)
 }
 async function getCategories() {
     let {data} = await api('genre/movie/list?language=es-ES');
@@ -144,12 +142,7 @@ async function getCategories() {
 async function getUpcomingMovies() {
     let {data} = await api('movie/upcoming');
     let upcomingMovies = data.results;
-    soonContent.innerHTML = '';
-    upcomingMovies.forEach(movie => {
-        soonContent.innerHTML = soonContent.innerHTML + `<div class="movie-poster">
-        <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id})">
-        </div>`
-    })
+    renderMovies(upcomingMovies, soonContent);
 }
 async function watchMovieInfo(id, isPage) {
     if (!isPage) {
@@ -220,6 +213,19 @@ function hideMobileMenu() {
 }
 function hideSearchMobile() {
     searchMobileContainer.classList.add('hidden')
+}
+function renderMovies(movies, container) {
+    container.innerHTML = '';
+    movies.forEach(movie => {
+        let movieHTML = `<div class="movie-poster">
+        <img alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id})" dataImg="https://image.tmdb.org/t/p/w300${movie.poster_path}">
+        </div>`;
+        container.innerHTML += movieHTML;
+    });
+    let imgs = container.querySelectorAll('.movie-poster img');
+    imgs.forEach(img => {
+        lazyImg.observe(img)
+    })
 }
 getTrendingMovies()
 getPopularMovies()
