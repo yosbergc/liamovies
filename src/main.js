@@ -109,7 +109,7 @@ function imgDefer(entries) {
 }
 async function getHeader() {
     let randomNumber = Math.floor(Math.random() * 20)
-    heroImage.style.background = `url(https://image.tmdb.org/t/p/original/${trendingMovies[randomNumber].backdrop_path})`
+    heroImage.style.background = `url(https://image.tmdb.org/t/p/w500/${trendingMovies[randomNumber].backdrop_path})`
     heroImage.style.backgroundSize = 'cover'
     heroImage.style.backgroundPosition = 'center'
     heroMovieTitle.classList.remove('loading')
