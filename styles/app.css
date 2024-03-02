@@ -70,6 +70,18 @@ h2 {
 .movie-title {
     margin-bottom: 10px;
 }
+.movie-title.loading {
+    background-color: rgb(48, 48, 48);
+    width: 90%;
+    height: 80px;
+    animation: 1s loading infinite alternate;
+}
+.movie-feature-overview.loading {
+    background-color: gray;
+    width: 100%;
+    height: 20px;
+    animation: 0.5s loading infinite alternate;
+}
 .movie-features {
     display: flex;
     align-items: center;
@@ -115,6 +127,7 @@ h2 {
 .trending-header .primary-btn {
     font-size: 14px;
 }
+
 .trending-content, .similar-movies, .most-popular-content, .soon-content {
     display: flex;
     flex-wrap: nowrap;
@@ -126,6 +139,7 @@ h2 {
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     white-space: nowrap;
+    position: relative;
 }
 .movie-poster {
     min-width: 126px;
@@ -137,6 +151,21 @@ h2 {
     scroll-snap-align: center;
     margin-bottom: 5px;
     aspect-ratio: 9/16;
+}
+.movie-poster--loading {
+    background-color: gray;
+    animation: 1s ease-in-out loading infinite alternate;
+}
+@keyframes loading {
+    0% {
+        opacity: 30%;
+    }
+    100% {
+        opacity: 100%
+    }
+    0% {
+        opacity: 30%;
+    }
 }
 .movie-poster img {
     width: 100%;
@@ -154,7 +183,7 @@ h2 {
 .categories-container {
     margin-top: 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 20px;
 }
 .categories-section h3 {
@@ -172,6 +201,12 @@ h2 {
     word-wrap: break-word;
     font-size: 16px;
     transition: 0.3s;
+}
+.category-loading {
+    background-color: gray;
+    border-radius: 15px;
+    animation: 0.9s loading infinite alternate;
+    height: 40px;
 }
 .category:hover {
     background-color: var(--tercer-color);

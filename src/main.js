@@ -103,7 +103,9 @@ async function getHeader() {
     heroImage.style.background = `url(https://image.tmdb.org/t/p/original/${trendingMovies[randomNumber].backdrop_path})`
     heroImage.style.backgroundSize = 'cover'
     heroImage.style.backgroundPosition = 'center'
+    heroMovieTitle.classList.remove('loading')
     heroMovieTitle.innerHTML = trendingMovies[randomNumber].title;
+    heroOverview.classList.remove('loading')
     heroOverview.innerHTML = trendingMovies[randomNumber].overview;
     heroInfoBtn.onclick = () => {
         watchMovieInfo(trendingMovies[randomNumber].id)
@@ -112,16 +114,19 @@ async function getHeader() {
 async function getTrendingMovies() {
     let {data} = await api('trending/movie/day?language=es-ES');
     trendingMovies = data.results;
+    trendingContent.innerHTML = '';
     trendingMovies.forEach(movie => {
         trendingContent.innerHTML = trendingContent.innerHTML + `<div class="movie-poster">
         <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id})">
         </div>`
     });
+
     getHeader();
 }
 async function getPopularMovies() {
     let {data} = await api('movie/popular');
     let popularMovies = data.results;
+    mostPopularContent.innerHTML = '';
     popularMovies.forEach(movie => {
         mostPopularContent.innerHTML = mostPopularContent.innerHTML + `<div class="movie-poster">
         <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id})">
@@ -131,6 +136,7 @@ async function getPopularMovies() {
 async function getCategories() {
     let {data} = await api('genre/movie/list?language=es-ES');
     let genres = data.genres;
+    categoriesContent.innerHTML = '';
     genres.forEach(genre => {
         categoriesContent.innerHTML = categoriesContent.innerHTML + `<button class="category" onclick="watchCategoryMovies(${genre.id})">${genre.name}</button>`
     })
@@ -138,6 +144,7 @@ async function getCategories() {
 async function getUpcomingMovies() {
     let {data} = await api('movie/upcoming');
     let upcomingMovies = data.results;
+    soonContent.innerHTML = '';
     upcomingMovies.forEach(movie => {
         soonContent.innerHTML = soonContent.innerHTML + `<div class="movie-poster">
         <img src="https://image.tmdb.org/t/p/w300/${movie.poster_path}" alt="${movie.title}" loading="lazy" onclick="watchMovieInfo(${movie.id})">
